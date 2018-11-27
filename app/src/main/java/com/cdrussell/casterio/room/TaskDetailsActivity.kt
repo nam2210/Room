@@ -40,7 +40,10 @@ class TaskDetailsActivity : AppCompatActivity() {
 
                 // update the task in the DB
                 it.completed = isChecked
-                thread { taskDao.update(it) }
+                thread {
+                    taskDao.update(it.completed, it.id)
+                    //taskDao.update(it)
+                }
             }
         }
     }
