@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -39,7 +40,9 @@ class MainActivity : AppCompatActivity() {
             return@OnEditorActionListener false
         })
 
-        taskListAdapter = TaskListAdapter()
+        taskListAdapter = TaskListAdapter {
+            Log.e("abc", it.toString())
+        }
         taskList.layoutManager = LinearLayoutManager(this)
         taskList.adapter = taskListAdapter
 
