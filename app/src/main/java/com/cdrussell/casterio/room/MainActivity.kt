@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         taskList.adapter = taskListAdapter
 
         taskDao.getAll().observe(this, Observer<List<Task>> {
+            Log.e("TAG", "refresh again")
             taskListAdapter.submitList(it)
         })
     }

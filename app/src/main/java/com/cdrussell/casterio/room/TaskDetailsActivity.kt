@@ -51,7 +51,10 @@ class TaskDetailsActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.menu_item_delete_task -> {
 
-                thread { taskDao.delete(task) }
+                thread {
+                    //taskDao.delete(task)
+                    taskDao.delete(task.id)
+                }
 
                 true
             }
