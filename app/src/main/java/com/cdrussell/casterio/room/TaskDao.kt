@@ -42,5 +42,11 @@ interface TaskDao {
     data class UserTask(
             @Embedded(prefix = "user_") var user: User?,
             @Embedded var task: Task
-    )
+
+
+    ) {
+        override fun toString(): String {
+            return "UserTask(user=$user, task=$task)"
+        }
+    }
 }
