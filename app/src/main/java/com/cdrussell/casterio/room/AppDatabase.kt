@@ -9,7 +9,7 @@ import com.cdrussell.casterio.room.users.UserDao
 
 
 @Database(
-    version = 1, entities = [
+    version = 2, entities = [
         // list DB entities
         Task::class,
         User::class

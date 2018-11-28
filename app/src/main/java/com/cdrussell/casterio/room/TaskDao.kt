@@ -2,6 +2,7 @@ package com.cdrussell.casterio.room
 
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
+import com.cdrussell.casterio.room.users.User
 
 @Dao
 interface TaskDao {
@@ -27,12 +28,19 @@ interface TaskDao {
     @Query("SELECT task.* FROM Task LEFT OUTER JOIN User ON Task.userId == User.id")
     fun getTasksAndUsers(): LiveData<List<Task>>
 
-    @Query("SELECT * FROM Task LEFT OUTER JOIN User ON Task.userId == User.id WHERE Task.id = :taskId")
-    fun getTaskAndUsers(taskId: Int): LiveData<Task>
+    @Query("SELECT Task.*, User.id as user_id, User.name as user_name" +
+            " FROM Task LEFT OUTER JOIN User ON Task.userId == User.id" +
+            " WHERE Task.id = :taskId")
+    fun getTaskAndUsers(taskId: Int): LiveData<UserTask>
 
-    data class UserTask(var id: Int,
-                        var title: String,
-                        var completed: Boolean,
-                        var userId: Int?,
-                        var name: String?)
+//    data class UserTask(var id: Int,
+//                        var title: String,
+//                        var completed: Boolean,
+//                        var userId: Int?,
+//                        var name: String?)
+
+    data class UserTask(
+            @Embedded(prefix = "user_") var user: User?,
+            @Embedded var task: Task
+    )
 }

@@ -9,11 +9,14 @@ import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.TextView
+import com.cdrussell.casterio.room.R.id.taskCompletionCheckbox
 import com.cdrussell.casterio.room.users.User
 import com.cdrussell.casterio.room.users.UserDao
 import kotlinx.android.synthetic.main.activity_task_details.*
 import kotlinx.android.synthetic.main.content_task_details.*
+import kotlinx.android.synthetic.main.item_task_row.*
 import kotlin.concurrent.thread
 import kotlinx.android.synthetic.main.content_task_details.taskId as taskIdInput
 
@@ -28,29 +31,53 @@ class TaskDetailsActivity : AppCompatActivity() {
 
     private var spinnerInitialised = false
 
+    private lateinit var taskTitle: TextView
+    private lateinit var assignee: Spinner
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_details)
         setSupportActionBar(toolbar)
+
+        taskTitle = findViewById(R.id.taskTitle)
+        assignee = findViewById(R.id.assignee)
+
         configureAssigneeAdapter()
+
+
 
         taskDao = AppDatabase.getInstance(this).taskDao()
         userDao = AppDatabase.getInstance(this).userDao()
 
         val taskId = extractTaskId()
-        taskDao.getTask(taskId).observe(this, Observer<Task> {
-            if (it == null) {
+//        taskDao.getTask(taskId).observe(this, Observer<Task> {
+//            if (it == null) {
+//                finish()
+//                return@Observer
+//            }
+//
+//            taskTitle.text = it.title
+//            taskIdInput.text = it.id.toString()
+//            assigneeUserId.text = it.userId?.toString() ?: getString(R.string.unassigned)
+//
+//            taskCompletionCheckbox.isChecked = it.completed
+//
+//            task = it
+//        })
+
+        taskDao.getTaskAndUsers(taskId).observe(this, Observer {
+            if (it == null){
                 finish()
                 return@Observer
             }
+            task = it.task
 
-            taskTitle.text = it.title
-            taskIdInput.text = it.id.toString()
-            assigneeUserId.text = it.userId?.toString() ?: getString(R.string.unassigned)
+            taskTitle.text = it.task.title
+            taskIdInput.text = it.task.id.toString()
+            taskCompletionCheckbox.isChecked = it.task.completed
 
-            taskCompletionCheckbox.isChecked = it.completed
+            assigneeUserId.text = it.user?.name ?: getString(R.string.unassigned)
 
-            task = it
         })
 
         userDao.getAll().observe(this, Observer<List<User>> {
