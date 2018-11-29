@@ -28,11 +28,11 @@ interface UserDao {
 
     class UserAndTasks {
 
-        @Embedded
-        lateinit var user: User
-
         @Relation(parentColumn = "id", entityColumn = "userId")
         lateinit var tasks: List<Task>
+
+        @Embedded
+        lateinit var user: User
 
     }
 

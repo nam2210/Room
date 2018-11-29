@@ -23,6 +23,7 @@ class UserListAdapter(private val deleteListener: (UserAndTasks) -> Unit) :
         holder.bind(getItem(position), deleteListener)
     }
 
+
     companion object {
 
         val DIFF_UTIL_CALLBACK = object : DiffUtil.ItemCallback<UserAndTasks>() {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
 import android.widget.TextView
 import com.cdrussell.casterio.room.AppDatabase
@@ -51,6 +52,7 @@ class UsersActivity : AppCompatActivity() {
 
 
         userDao.getAllUsersAndTasks().observe(this, Observer<List<UserDao.UserAndTasks>> {
+            Log.e("abc", "size=" + it?.size.toString())
             userListAdapter.submitList(it)
         })
     }
